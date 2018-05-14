@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Testing</title>
+    <link rel="stylesheet" href="static/css/reset.css">
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <div id="container">
+        <div id="canvasContainer"></div>
+        <div>
+            <div class="imgColorBox colorBox" style="background-color: white"></div>
+            <div class="imgColorBox colorBox" style="background-color: red"></div>
+            <div class="imgColorBox colorBox" style="background-color: green"></div>
+            <div class="imgColorBox colorBox" style="background-color: blue"></div>
+            <div class="imgColorBox colorBox" style="background-color: black"></div>
+        </div>
+        <div>
+            <div class="bgColorBox colorBox" style="background-color: white"></div>
+            <div class="bgColorBox colorBox" style="background-color: red"></div>
+            <div class="bgColorBox colorBox" style="background-color: green"></div>
+            <div class="bgColorBox colorBox" style="background-color: blue"></div>
+            <div class="bgColorBox colorBox" style="background-color: black"></div>
+        </div>
+    </div>
+    
+    <script src="static/js/Canvaser.min.js"></script>
+
+    <script type="text/javascript">
+        var test, bgColorBoxes, imgColorBoxes;
+
+        window.onload = function() {
+            test = new Canvaser('canvasContainer', [
+                {
+                    'backgroundColor': '#000'
+                }, {
+                    'imageSrc': 'test.png',
+                    'imageColor': '#fff'
+                }
+            ]);
+
+            bgColorBoxes = document.getElementsByClassName('bgColorBox');
+
+            for(var i = 0; i < bgColorBoxes.length; i++){
+                var bgColorBox = bgColorBoxes[i];
+
+                bgColorBox.addEventListener('click', function(event) {
+                    var layer = test.getLayer(1);
+                    var currentColor = layer.backgroundColor;
+                    var color = w3color(event.currentTarget.style.backgroundColor).toHexString();
+
+                    if(color != currentColor) {
+                        test.getLayer(0).originalColor = color;
+                        test.setLayerBackgroundColor(0, color);
+                    }
+                });
+
+                bgColorBox.addEventListener('mouseenter', function(event) {
+                    var newColor = w3color(event.currentTarget.style.backgroundColor).toHexString();
+                    var layer = test.getLayer(0);
+                    layer.originalColor = layer.backgroundColor.toHexString();
+                    test.setLayerBackgroundColor(0, newColor);
+                });
+
+                bgColorBox.addEventListener('mouseleave', function(event) {
+                    var layer = test.getLayer(0);
+                    var originalColor = layer.originalColor;
+                    var currentColor = layer.backgroundColor.toHexString();
+                    
+                    if(currentColor != originalColor) {
+                        test.setLayerBackgroundColor(0, originalColor);
+                    }
+                });
+            }
+
+            imgColorBoxes = document.getElementsByClassName('imgColorBox');
+
+            for(var i = 0; i < imgColorBoxes.length; i++){
+                var imgColorBox = imgColorBoxes[i];
+
+                imgColorBox.addEventListener('click', function(event) {
+                    var layer = test.getLayer(1);
+                    var currentColor = layer.imageColor;
+                    var color = w3color(event.currentTarget.style.backgroundColor).toHexString();
+                    
+                    if(currentColor != color) {   
+                        layer.originalColor = color;
+                        test.setLayerImageColor(1, color);
+                    }
+                });
+
+                imgColorBox.addEventListener('mouseenter', function(event) {
+                    var newColor = w3color(event.currentTarget.style.backgroundColor).toHexString();
+                    var layer = test.getLayer(1);
+                    layer.originalColor = layer.imageColor.toHexString();
+                    test.setLayerImageColor(1, newColor);
+                });
+
+                imgColorBox.addEventListener('mouseleave', function(event) {
+                    var bg = test.getLayer(1);
+                    var originalColor = bg.originalColor;
+                    var currentColor = bg.imageColor.toHexString();
+                    
+                    if(currentColor != originalColor) {
+                        test.setLayerImageColor(1, originalColor);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

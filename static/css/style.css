@@ -1,0 +1,17 @@
+#container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 0; 
+}
+
+#canvasContainer {
+    width: 50%;
+}
+
+.colorBox {
+    display: inline-block;
+    cursor: pointer;
+    margin: 2px;
+    border: 1px solid black;
+    padding: 10px;
+}
